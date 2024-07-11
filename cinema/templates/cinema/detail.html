@@ -1,0 +1,37 @@
+{% extends "cinema/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <video width="100%" controls autoplay controlsList="nodownload" oncontextmenu="return false;">
+                <source src="{{ video.video_file.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <h2>{{ video.title }}</h2>
+            <p><i>Rating: </i> <b>{{ average_rating|default:"No ratings yet" }} / {{ votes }} votes</b></p>
+            <p><i>Genre:</i> {{ video.genre }} | <i>Duration:</i> {{ video.duration }} | <i>Year:</i> {{ video.year }}</p>
+            <p><i>Description:</i> {{ video.description }}</p>
+            <p><i>Cast</i>: {{ video.cast }}</p>
+            {% if not user_has_voted %}
+            <form method="post">
+                {% csrf_token %}
+                <label for="rating">Rate video:</label>
+                <select name="rating" id="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+            {% else %}
+            <p>Your rating has been submitted. Thank you!</p>
+            {% endif %}           
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
