@@ -1,0 +1,61 @@
+{% extends "cinema/base.html" %}
+{% block content %}
+<div class="content-section">
+    <h3>Select a subscription plan:</h3>
+    <br><br>
+    <div class="plan">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                        <div class="text-center">
+                            <form method="post" action="{% url 'process_payment' %}">
+                                {% csrf_token %}
+                                <h3>Ultra light - 30 days</h3>
+                                <p>Best choice for new users to try out our service.</p>
+                                <h5>$ 2.99 / month</h5>
+                                <input type="hidden" name="plan" value="30">
+                                <button class="btn btn-primary" type="submit">Select</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                        <div class="text-center">
+                            <form method="post" action="{% url 'process_payment' %}">
+                                {% csrf_token %}
+                                <h3>Popular+ - 60 days</h3>
+                                <p>Super popular plan for cinema fans and critics.</p>
+                                <h5>$ 3.99 / month</h5>
+                                <input type="hidden" name="plan" value="60">
+                                <button class="btn btn-primary" type="submit">Select</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                        <div class="text-center">
+                            <form method="post" action="{% url 'process_payment' %}">
+                                {% csrf_token %}
+                                <h3>Premium - 120 days</h3>
+                                <p>Best price for true experts and long term users.</p>
+                                <h5>$ 4.99 / month</h5>
+                                <input type="hidden" name="plan" value="120">
+                                <button class="btn btn-primary" type="submit">Select</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

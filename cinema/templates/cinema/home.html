@@ -1,0 +1,74 @@
+{% extends "cinema/base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <form method="get" class="row mb-3">
+    <div class="col-md-8">
+        <label for="genre">Filter by Genre:</label>
+        <select name="genre" id="genre" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for genre in genres %}
+            <option value="{{ genre }}" {% if selected_genre == genre %}selected{% endif %}>{{ genre }}</option>
+            {% endfor %}
+        </select>
+        <label for="title">Search by Title:</label>
+        <input type="text" id="title" name="title" value="{{ title }}">
+        <input type="submit" value="Search">
+    </div>
+</form>
+    <div class="row">
+        {% for video in videos %}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-img-top">
+                    <img src="{{ video.placeholder_image.url }}" alt="{{ video.title }}" style="width: 100%; height: 192px; object-fit: cover;">
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                          <a href="{% url 'cinema-detail' video.id %}">
+                            <h5 class="card-title">{{ video.title }}</h5>
+                          </a>
+                            <p class="card-text">{{ video.genre }} | {{ video.duration }} | {{ video.year }}</p>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <a href="#" class="toggle-watch-list" data-video-id="{{ video.id }}">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 and not forloop.last %}
+        </div>
+        <div class="row">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var urlTemplate = '{% url "mylist:toggle-watch-list" video_id=0 %}';
+    
+    $(document).ready(function() {
+    $('.toggle-watch-list').click(function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var videoId = link.data('video-id');
+        var url = urlTemplate.replace('0', videoId);
+        fetch(url).then(response => response.json()).then(data => {
+            var icon = link.find('i');
+            if (data.added) {
+                icon.removeClass('fa-plus').addClass('fa-check');
+            } else {
+                icon.removeClass('fa-check').addClass('fa-plus');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
